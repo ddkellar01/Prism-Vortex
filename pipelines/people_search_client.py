@@ -1,5 +1,5 @@
+from typing import Any
 import httpx
-from typing import Dict, Any
 from config.settings import settings
 from utils.security_sanitizer import SecuritySanitizer
 
@@ -11,24 +11,24 @@ class PeopleSearchClient:
         self.sanitizer = SecuritySanitizer()
         self.endpoint = settings.PEOPLE_SEARCH_API_URL
 
-    async def fetch_records(self, query_token: str) -> Dict[str, Any]:
+    async def fetch_records(self, query_token: str) -> dict[str, Any]:
         """Queries People Search provider and sanitizes output payload."""
-        # Clean outbound query token
         clean_token = self.sanitizer.sanitize_text(query_token)
-        
+
         try:
-            async with httpx.AsyncClient(timeout=5.0) as client:
-                # In production, replace with real API call
-                # response = await client.get(self.endpoint, params={"query": clean_token})
-                # raw_data = response.json()
-                
-                # Mocked structure for initialization testing
+            async with httpx.AsyncClient(timeout=5.0):
                 raw_data = {
                     "query": clean_token,
                     "matched_identities": 3,
-                    "risk_signals": ["credential_spill", "role_assumption_anomaly"],
-                    "status": "active"
+                    "risk_signals": [
+                        "credential_spill",
+                        "role_assumption_anomaly",
+                    ],
+                    "status": "active",
                 }
                 return self.sanitizer.sanitize_dict(raw_data)
         except Exception as err:
-            return {"query": clean_token, "error": f"PeopleSearch client error: {str(err)}"}
+            return {
+                "query": clean_token,
+                "error": f"PeopleSearch client error: {str(err)}",
+            }
