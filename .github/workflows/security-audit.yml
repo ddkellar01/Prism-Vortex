@@ -18,14 +18,25 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Bandit & Safety
+      - name: Install Bandit
         run: |
-          pip install bandit safety
+          python -m pip install --upgrade pip
+          pip install bandit
 
       - name: Run Static Application Security Testing (SAST)
         run: |
           bandit -r . -ll -ii
 
+      # Safety CLI now requires an interactive account login before it will
+      # scan (`safety scan` prompts for registration and dies with
+      # "EOF when reading a line" on CI runners). pip-audit is the free,
+      # non-interactive replacement: it audits the project's installed
+      # dependencies against the PyPI Advisory Database / OSV.
+      # The venv's bundled pip/setuptools are upgraded first so pip-audit
+      # does not fail the job on the venv seed packages themselves.
       - name: Scan Python Dependencies for Known Vulnerabilities
         run: |
-          safety scan
+          python -m venv audit-env
+          ./audit-env/bin/pip install --upgrade pip setuptools
+          ./audit-env/bin/pip install . pip-audit
+          ./audit-env/bin/pip-audit
