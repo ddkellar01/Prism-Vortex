@@ -1,0 +1,31 @@
+name: PrismVortex Security & Vulnerability Audit
+
+on:
+  schedule:
+    - cron: '0 0 * * 1' # Every Monday at midnight
+  push:
+    branches: [ main ]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Bandit & Safety
+        run: |
+          pip install bandit safety
+
+      - name: Run Static Application Security Testing (SAST)
+        run: |
+          bandit -r . -ll -ii
+
+      - name: Scan Python Dependencies for Known Vulnerabilities
+        run: |
+          safety check --full-report
