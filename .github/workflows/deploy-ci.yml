@@ -1,0 +1,47 @@
+name: PrismVortex CI/CD Build & Push
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+
+      - name: Run Linting & Code Style Checks
+        run: |
+          ruff check .
+          black --check .
+
+      - name: Execute Unit & Integration Tests
+        env:
+          GEMINI_API_KEY: "mock_key_for_ci_testing"
+        run: |
+          pytest tests/ -v --asyncio-mode=auto
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Container Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: deploy/Dockerfile
+          push: false
+          tags: prism-vortex:test-build
