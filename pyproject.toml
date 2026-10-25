@@ -31,6 +31,10 @@ dev = [
     "ruff>=0.3.0"
 ]
 
+# --- ADD THIS SECTION TO FIX PACKAGE DISCOVERY ---
+[tool.setuptools.packages.find]
+include = ["agents*", "config*", "models*", "pipelines*", "utils*"]
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
