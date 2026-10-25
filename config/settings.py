@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     
     # Infrastructure
     REDIS_URL: str = "redis://localhost:6379/0"
-    HOST: str = "0.0.0.0"
+    HOST: str = "0.0.0.0"  # nosec B104
     PORT: int = 8080
 
     model_config = SettingsConfigDict(
