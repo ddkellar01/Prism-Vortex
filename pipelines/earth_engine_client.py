@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import Any
 import ee
 from config.settings import settings
 
@@ -14,7 +14,7 @@ class EarthEngineClient:
         except Exception:
             self.initialized = False
 
-    async def fetch_telemetry(self, coordinates: List[float]) -> Dict[str, Any]:
+    async def fetch_telemetry(self, coordinates: list[float]) -> dict[str, Any]:
         """Pulls spatial metrics surrounding given latitude and longitude."""
         if not coordinates or len(coordinates) < 2:
             return {"error": "Invalid coordinates supplied."}
@@ -22,23 +22,21 @@ class EarthEngineClient:
         lat, lon = coordinates[0], coordinates[1]
 
         if not self.initialized:
-            # Fallback structure when Earth Engine environment credentials are offline
             return {
                 "latitude": lat,
                 "longitude": lon,
                 "status": "unauthenticated_fallback",
                 "elevation_m": 120.5,
-                "infrastructure_density_score": 0.82
+                "infrastructure_density_score": 0.82,
             }
 
         try:
             point = ee.Geometry.Point([lon, lat])
-            # Sample spatial terrain data
             return {
                 "latitude": lat,
                 "longitude": lon,
                 "status": "authenticated",
-                "point_buffer": point.buffer(100).toGeoJSON()
+                "point_buffer": point.buffer(100).toGeoJSON(),
             }
         except Exception as e:
             return {"latitude": lat, "longitude": lon, "error": str(e)}
