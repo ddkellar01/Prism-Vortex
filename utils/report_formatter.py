@@ -1,5 +1,5 @@
-import json
 from datetime import datetime, timezone
+from typing import Any
 
 
 class ReportFormatter:
@@ -10,8 +10,8 @@ class ReportFormatter:
         target_query: str,
         coordinates: list[float],
         risk_score: float,
-        agent_raw_reasoning: str
-    ) -> dict:
+        agent_raw_reasoning: str,
+    ) -> dict[str, Any]:
         """Packages scouting outputs into structured JSON payload."""
         timestamp = datetime.now(timezone.utc).isoformat()
 
@@ -20,17 +20,21 @@ class ReportFormatter:
                 "system": "PrismVortex Engine",
                 "timestamp": timestamp,
                 "target_identifier": target_query,
-                "coordinates": coordinates
+                "coordinates": coordinates,
             },
             "evaluation": {
                 "neural_risk_score": risk_score,
-                "threat_level": "CRITICAL" if risk_score > 0.75 else ("HIGH" if risk_score > 0.5 else "NORMAL")
+                "threat_level": (
+                    "CRITICAL"
+                    if risk_score > 0.75
+                    else ("HIGH" if risk_score > 0.5 else "NORMAL")
+                ),
             },
-            "scout_analysis": agent_raw_reasoning
+            "scout_analysis": agent_raw_reasoning,
         }
 
     @staticmethod
-    def to_markdown(report_data: dict) -> str:
+    def to_markdown(report_data: dict[str, Any]) -> str:
         """Renders report dictionary into clean Markdown format."""
         meta = report_data["metadata"]
         eval_data = report_data["evaluation"]
