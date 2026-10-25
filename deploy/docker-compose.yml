@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  prism-vortex-api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: prism_vortex_api
+    ports:
+      - "8080:8080"
+    environment:
+      - ENVIRONMENT=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ARGON_MODEL_ID=gemini-4-argon
+      - REDIS_URL=redis://redis:6379/0
+      - HOST=0.0.0.0
+      - PORT=8080
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: prism_vortex_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  redis_data:
