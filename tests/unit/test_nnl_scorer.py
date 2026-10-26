@@ -1,7 +1,5 @@
-import pytest
-import torch
-from models.sml_nnl_engine import EdgeScoringEngine
 from models.heuristic_rules import HeuristicRuleEvaluator
+from models.sml_nnl_engine import EdgeScoringEngine
 
 
 def test_edge_scoring_engine_forward_pass():
@@ -21,10 +19,12 @@ def test_feature_vector_extraction():
     earth_data = {"status": "authenticated", "infrastructure_density_score": 0.75}
     flow_data = {"step_anomalies_detected": True, "latency_spike_ms": 1000}
 
-    features = HeuristicRuleEvaluator.extract_feature_vector(people_data, earth_data, flow_data)
+    features = HeuristicRuleEvaluator.extract_feature_vector(
+        people_data, earth_data, flow_data
+    )
 
     assert len(features) == 10
     assert features[0] == 0.5  # 2 signals * 0.25
-    assert features[2] == 0.75 # density score
-    assert features[3] == 0.85 # anomaly flag
+    assert features[2] == 0.75  # density score
+    assert features[3] == 0.85  # anomaly flag
     assert features[4] == 0.5  # 1000 / 2000
