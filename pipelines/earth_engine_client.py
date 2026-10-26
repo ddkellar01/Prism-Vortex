@@ -1,5 +1,7 @@
 from typing import Any
+
 import ee
+
 from config.settings import settings
 
 
@@ -11,7 +13,9 @@ class EarthEngineClient:
         try:
             ee.Initialize(project=settings.EARTH_ENGINE_PROJECT)
             self.initialized = True
-        except Exception:
+        except ee.EEException:
+            # Unauthenticated / unconfigured Earth Engine access lands here
+            # (verified: ee.Initialize raises EEException without credentials).
             self.initialized = False
 
     async def fetch_telemetry(self, coordinates: list[float]) -> dict[str, Any]:
@@ -38,5 +42,5 @@ class EarthEngineClient:
                 "status": "authenticated",
                 "point_buffer": point.buffer(100).toGeoJSON(),
             }
-        except Exception as e:
+        except ee.EEException as e:
             return {"latitude": lat, "longitude": lon, "error": str(e)}
