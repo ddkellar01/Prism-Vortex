@@ -18,7 +18,9 @@ Goal & Execution Guidelines:
 """
 
 
-def build_scout_prompt(objective: str, context_payload: str, local_risk_score: float) -> str:
+def build_scout_prompt(
+    objective: str, context_payload: str, local_risk_score: float
+) -> str:
     """Formats the input prompt for Gemini 4 Argon thinking sessions."""
     return f"""
 [TARGET MISSION OBJECTIVE]:
