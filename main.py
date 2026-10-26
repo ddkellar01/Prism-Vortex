@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
+
 from agents.argon_core import ArgonAgentOrchestrator
 from config.logging_config import logger, setup_logging
 from config.settings import settings
@@ -29,8 +30,7 @@ class ScoutTargetRequest(BaseModel):
     objective: str = Field(
         ...,
         example=(
-            "Scout for perimeter threats, supply chain risks, and access"
-            " anomalies."
+            "Scout for perimeter threats, supply chain risks, and access" " anomalies."
         ),
     )
 
@@ -83,12 +83,13 @@ async def execute_scout_operation(payload: ScoutTargetRequest):
 
         return formatted_report
 
+    # Catch-all API boundary: any pipeline/agent failure becomes a 500.
     except Exception as err:
-        logger.error(f"Uncaught exception during scouting operation: {str(err)}")
+        logger.error(f"Uncaught exception during scouting operation: {err!s}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"PrismVortex execution failure: {str(err)}",
-        )
+            detail=f"PrismVortex execution failure: {err!s}",
+        ) from err
 
 
 if __name__ == "__main__":
