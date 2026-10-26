@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 
@@ -13,7 +13,7 @@ class ReportFormatter:
         agent_raw_reasoning: str,
     ) -> dict[str, Any]:
         """Packages scouting outputs into structured JSON payload."""
-        timestamp = datetime.now(timezone.utc).isoformat()
+        timestamp = datetime.now(UTC).isoformat()
 
         return {
             "metadata": {
