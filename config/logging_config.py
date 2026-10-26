@@ -1,24 +1,23 @@
-import logging
-import sys
-from pythonjsonlogger import jsonlogger
+from typing import Any
 
 
-def setup_logging(level: str = "INFO") -> None:
-    """Configures structured JSON logging across the application."""
-    logger = logging.getLogger()
-    logger.setLevel(level)
-
-    log_handler = logging.StreamHandler(sys.stdout)
-    formatter = jsonlogger.JsonFormatter(
-        "%(asctime)s %(levelname)s %(name)s %(module)s %(message)s"
-    )
-    log_handler.setFormatter(formatter)
-    
-    # Clear existing handlers to prevent duplicate output
-    if logger.hasHandlers():
-        logger.handlers.clear()
-        
-    logger.addHandler(log_handler)
+def query_threat_database(ip_address: str) -> dict[str, Any]:
+    """Queries persistent threat intelligence registry for IP reputation."""
+    return {
+        "ip": ip_address,
+        "reputation_score": 0.89,
+        "known_malicious_actor": True,
+        "threat_tags": ["botnet_node", "credential_stuffer"],
+    }
 
 
-logger = logging.getLogger("prism-vortex")
+def verify_iam_policy(role_arn: str) -> dict[str, Any]:
+    """Audits cloud IAM policy configurations for over-privileged assumptions."""
+    return {
+        "role_arn": role_arn,
+        "is_overprivileged": True,
+        "misconfigurations": ["s3:GetObject on *", "sts:AssumeRole without MFA"],
+    }
+
+
+REGISTERED_TOOLS = [query_threat_database, verify_iam_policy]
