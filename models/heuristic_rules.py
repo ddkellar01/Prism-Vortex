@@ -1,23 +1,23 @@
-from typing import Dict, Any, List
+from typing import Any
 
 
 class HeuristicRuleEvaluator:
     """Static heuristic rule checker to complement neural edge scoring."""
 
     @staticmethod
-    def evaluate_geospatial_anomaly(lat: float, lon: float, expected_region: str) -> bool:
+    def evaluate_geospatial_anomaly(
+        lat: float, lon: float, expected_region: str
+    ) -> bool:
         """Checks if coordinates deviate significantly from operational region bounding boxes."""
         # Baseline check (e.g., bounding coordinates outside normal operating boundaries)
-        if lat < -90.0 or lat > 90.0 or lon < -180.0 or lon > 180.0:
-            return True
-        return False
+        return lat < -90.0 or lat > 90.0 or lon < -180.0 or lon > 180.0
 
     @staticmethod
     def extract_feature_vector(
-        people_data: Dict[str, Any],
-        earth_data: Dict[str, Any],
-        flow_data: Dict[str, Any]
-    ) -> List[float]:
+        people_data: dict[str, Any],
+        earth_data: dict[str, Any],
+        flow_data: dict[str, Any],
+    ) -> list[float]:
         """Maps unstructured JSON telemetry feeds into a 10-dimensional PyTorch feature tensor."""
         features = [0.0] * 10
 
