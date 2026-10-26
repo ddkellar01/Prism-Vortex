@@ -1,6 +1,7 @@
 import asyncio
 import json
 from typing import Any
+
 from pipelines.earth_engine_client import EarthEngineClient
 from pipelines.flow_telemetry_client import FlowTelemetryClient
 from pipelines.people_search_client import PeopleSearchClient
@@ -33,14 +34,10 @@ class DataFusionPipeline:
                 else str(people_data)
             ),
             "source_geospatial_earth": (
-                earth_data
-                if not isinstance(earth_data, Exception)
-                else str(earth_data)
+                earth_data if not isinstance(earth_data, Exception) else str(earth_data)
             ),
             "source_workflow_flow": (
-                flow_data
-                if not isinstance(flow_data, Exception)
-                else str(flow_data)
+                flow_data if not isinstance(flow_data, Exception) else str(flow_data)
             ),
         }
 
