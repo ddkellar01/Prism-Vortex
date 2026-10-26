@@ -1,5 +1,7 @@
 from typing import Any
+
 import httpx
+
 from config.settings import settings
 from utils.security_sanitizer import SecuritySanitizer
 
@@ -27,8 +29,8 @@ class PeopleSearchClient:
                     "status": "active",
                 }
                 return self.sanitizer.sanitize_dict(raw_data)
-        except Exception as err:
+        except httpx.HTTPError as err:
             return {
                 "query": clean_token,
-                "error": f"PeopleSearch client error: {str(err)}",
+                "error": f"PeopleSearch client error: {err!s}",
             }
