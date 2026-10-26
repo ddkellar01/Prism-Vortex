@@ -1,4 +1,5 @@
 import pytest
+
 from pipelines.fusion_pipeline import DataFusionPipeline
 
 
