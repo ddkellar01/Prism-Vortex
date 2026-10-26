@@ -1,5 +1,5 @@
-import re
 import html
+import re
 
 
 class SecuritySanitizer:
