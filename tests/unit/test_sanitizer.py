@@ -25,3 +25,4 @@ def test_security_sanitizer_dict_recursion():
     clean_dict = sanitizer.sanitize_dict(payload)
     assert clean_dict["target"] == "System_Alpha"
     assert "[FILTERED_INJECTION_VECTOR]" in clean_dict["nested"]["query"]
+    
