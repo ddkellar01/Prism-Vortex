@@ -17,3 +17,4 @@ async def test_data_fusion_aggregation():
     assert "source_geospatial_earth" in result_json_str
     assert "source_workflow_flow" in result_json_str
     assert target_query in result_json_str
+    
