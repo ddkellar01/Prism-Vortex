@@ -34,3 +34,4 @@ class PeopleSearchClient:
                 "query": clean_token,
                 "error": f"PeopleSearch client error: {err!s}",
             }
+            
