@@ -22,3 +22,4 @@ class FlowTelemetryClient:
         }
 
         return self.sanitizer.sanitize_dict(mock_log_data)
+        
