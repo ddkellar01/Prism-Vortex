@@ -33,3 +33,4 @@ class EdgeScoringEngine:
             input_tensor = torch.tensor([feature_vector], dtype=torch.float32)
             prediction = self.model(input_tensor)
             return round(prediction.item(), 4)
+            
