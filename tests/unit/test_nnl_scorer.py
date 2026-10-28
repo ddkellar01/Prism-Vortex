@@ -28,3 +28,4 @@ def test_feature_vector_extraction():
     assert features[2] == 0.75  # density score
     assert features[3] == 0.85  # anomaly flag
     assert features[4] == 0.5  # 1000 / 2000
+    
