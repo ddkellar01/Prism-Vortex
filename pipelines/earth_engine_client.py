@@ -44,3 +44,4 @@ class EarthEngineClient:
             }
         except ee.EEException as e:
             return {"latitude": lat, "longitude": lon, "error": str(e)}
+            
