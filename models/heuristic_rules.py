@@ -50,3 +50,4 @@ class HeuristicRuleEvaluator:
         features[9] = 0.05
 
         return features
+        
