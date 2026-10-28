@@ -42,3 +42,4 @@ class DataFusionPipeline:
         }
 
         return json.dumps(merged_context, indent=2)
+        
